@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stored XSS Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        #comment-form {
+            margin-bottom: 30px;
+        }
+
+        #comments-section {
+            margin-top: 20px;
+        }
+
+        .comment {
+            background-color: #e9e9e9;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Leave a Comment</h1>
+
+    <form id="comment-form">
+        <textarea id="comment-input" rows="4" cols="50" placeholder="Type your comment here..."></textarea><br><br>
+        <button type="submit">Submit Comment</button>
+    </form>
+
+    <div id="comments-section">
+        <!-- Comments will be displayed here -->
+    </div>
+
+    <script>
+        // Simulating a basic backend storing and serving comments
+        const commentsSection = document.getElementById('comments-section');
+        const commentForm = document.getElementById('comment-form');
+        const commentInput = document.getElementById('comment-input');
+
+        let storedComments = []; // This will act as our "database"
+
+        commentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const newComment = commentInput.value;
+            if (newComment.trim()) {
+                // Store the comment as if saving it in a database (here in memory)
+                storedComments.push(newComment);
+                commentInput.value = ''; // Clear the textarea
+                renderComments(); // Re-render comments
+            }
+        });
+
+        function renderComments() {
+            // Clear the comments section
+            commentsSection.innerHTML = '';
+
+            // Display all stored comments (vulnerable to stored XSS)
+            storedComments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.classList.add('comment');
+                commentDiv.innerHTML = comment; // This is the dangerous part!
+                commentsSection.appendChild(commentDiv);
+            });
+        }
+    </script>
+
+</body>
+</html>
