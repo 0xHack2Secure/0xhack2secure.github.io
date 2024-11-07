@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        #search-bar {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        #search-result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Our Search Page, Your task is to find Dom Xss</h1>
+
+    <!-- The search bar -->
+    <input id="search-bar" type="text" placeholder="Search..." />
+
+    <!-- Container for displaying the result below the search bar -->
+    <div id="search-result"></div>
+
+    <script>
+        // DOM XSS Vulnerability Example: Reflecting user input without sanitization
+        const searchInput = document.getElementById('search-bar');
+        const resultContainer = document.getElementById('search-result');
+        
+        // Example of insecure use of user input
+        searchInput.addEventListener('input', function() {
+            const query = searchInput.value;
+            // This line is the problematic part:
+            resultContainer.innerHTML = `Your search term: ${query}`; // Insecure insertion of user input
+        });
+    </script>
+
+</body>
+</html>
